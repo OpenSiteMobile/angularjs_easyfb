@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html ng-app="plunker">
+
+  <head>
+    <meta charset="utf-8" />
+    <title>angular-easyfb social plugins demo</title>
+    <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <script>document.write('<base href="' + document.location + '" />');</script>
+        <style>
+        /* Std AngularJS CSS: Load in page so cloaking start immediately */
+        [ng\:cloak],
+		[ng-cloak],
+		[data-ng-cloak],
+		[x-ng-cloak],
+		.ng-cloak,
+		.x-ng-cloak,
+		.ng-hide:not(.ng-hide-animate) {
+			display: none !important;
+		}
+
+		ng\:form {
+			display: block;
+		}
+
+        .ng-cloak {
+            opacity: 0;
+        }
+
+		.ng-animate-shim{
+			visibility:hidden;
+		}
+
+		.ng-anchor{
+			position:absolute;
+		}
+
+		/* Page specific CSS */
+.ng-view-container {
+  padding: 0 20px;  
+}
+
+.nav-tabs {
+  margin-bottom: 20px;
+}
+
+.panel {
+  margin-bottom: 30px;
+}
+
+.hint-text {
+  font-size: 18px;
+  line-height: 34px;
+}
+    </style>
+    <script data-require="angular.js@1.4.x" src="http://code.angularjs.org/1.4.3/angular.min.js" data-semver="1.4.3"></script>
+    <script data-require="angular-route@1.4.x" data-semver="1.4.3" src="http://code.angularjs.org/1.4.3/angular-route.min.js"></script>
+    <script src="http://pc035860.github.io/angular-easyfb/angular-easyfb.min.js"></script>
+    <script src="app.js"></script>
+  </head>
+
+  <body ng-controller="MainCtrl">
+    <a href="https://github.com/pc035860/angular-easyfb">
+      <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" />
+    </a>
+    <div class="container">
+      <h2>angular-easyfb social plugins demo</h2>
+      
+      <p>
+        Ref: <a href="https://developers.facebook.com/docs/plugins">https://developers.facebook.com/docs/plugins</a>
+      </p>
+      
+      <p>&nbsp;</p>
+      
+      <ul class="nav nav-tabs">
+        <li ng-repeat="dir in SOCIAL_PLUGINS" ng-class="{active: isActive(dir)}">
+          <a href="" ng-click="goto(dir)">{{ dir }}</a>
+        </li>
+      </ul>
+      
+      <div class="panel panel-default">
+        <div class="panel-body">
+          <div class="pull-left hint-text">
+            <span class="text-danger" ng-show="!pluginOn">No plugin in view</span>
+            <span class="text-success" ng-show="!rendering">Social plugin rendered</span>
+            <span class="text-muted" ng-show="rendering && pluginOn">Rendering...</span>
+          </div>
+          <div class="pull-right">
+            <button class="btn btn-success" ng-show="!pluginOn" ng-click="pluginOn = !pluginOn">On</button>
+            <button class="btn btn-default" ng-show="pluginOn" ng-click="pluginOn = !pluginOn">Off</button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="ng-view-container">
+        <div ng-view></div>
+      </div>
+    </div>
+    
+    
+    <script type="text/ng-template" id="like.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-like" data-href="https://developers.facebook.com/docs/plugins/" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+    </script>
+
+    <script type="text/ng-template" id="share-button.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-share-button" data-href="http://developers.facebook.com/docs/plugins/" data-type="button_count"></div>
+    </script>
+
+    <script type="text/ng-template" id="send.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-send" data-href="http://developers.facebook.com/docs/plugins/" data-colorscheme="light"></div>
+    </script>
+
+    <script type="text/ng-template" id="post.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-post" data-href="https://www.facebook.com/FacebookDevelopers/posts/10151471074398553" data-width="500"></div>
+    </script>
+    
+    <script type="text/ng-template" id="video.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-video" data-href="https://www.facebook.com/facebook/videos/10153231379946729/" data-width="500" data-allowfullscreen="true">
+        <div class="fb-xfbml-parse-ignore">
+          <blockquote cite="/facebook/videos/10153415714906729/"><a href="/facebook/videos/10153415714906729/"></a><p>There are some friendships you have to earn.</p>Posted by <a href="https://www.facebook.com/facebook">Facebook</a> on 2015年2月9日</blockquote>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/ng-template" id="comments.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-comments" data-href="http://example.com/comments" data-numposts="5" data-colorscheme="light"></div>
+    </script>
+
+    <script type="text/ng-template" id="page.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-page" data-href="http://www.facebook.com/FacebookDevelopers" data-width="380" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"></div>
+    </script>
+
+    <script type="text/ng-template" id="follow.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-follow" data-href="http://www.facebook.com/zuck" data-colorscheme="light" data-layout="standard" data-show-faces="true"></div>
+    </script>
+
+    <!-- <script type="text/ng-template" id="comments-count.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-comments-count" data-href="http://example.com/comments"></div>
+    </script>
+    
+    <script type="text/ng-template" id="activity.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-activity" data-site="developers.facebook.com" data-action="likes, recommends" data-colorscheme="light" data-header="true"></div>
+    </script>
+    
+    <script type="text/ng-template" id="recommendations.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-recommendations" data-site="developers.facebook.com" data-action="likes, recommends" data-colorscheme="light" data-header="true"></div>
+    </script>
+    
+    <script type="text/ng-template" id="recommendations-bar.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-recommendations-bar" data-site="developers.facebook.com" data-read-time="30" data-side="left" data-action="like"></div>
+    </script>
+    
+    <script type="text/ng-template" id="facepile.html">
+      <div ng-if="pluginOn" onrender="rendered()" class="fb-facepile" data-href="http://facebook.com/FacebookDevelopers" data-max-rows="1" data-colorscheme="light" data-size="medium" data-show-count="true"></div>
+    </script> -->
+    
+  </body>
+</html>
